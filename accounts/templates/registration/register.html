@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Ensures body takes full height */
+            background-image: url({% static 'img/restaurant.jpg' %});
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover; 
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+       
+       
+        .logBtn {
+            text-decoration: none;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 10px; /* Space between buttons */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+        .logBtn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+      
+        .typewriter {
+            backdrop-filter: blur(10px);
+            text-align:center;
+            color: black;
+            font-size: 2em; /* Adjust font size as needed */
+            font-family: 'Courier New', Courier, monospace; /* Typewriter-style font */
+            white-space: nowrap; /* Prevent line breaks */
+            overflow: hidden; /* Hides the overflow */
+            border-right: 3px solid white; /* Cursor effect */
+            animation: typing 4s steps(30, end) forwards, blink-caret 0.75s step-end infinite; /* Animation */
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 65%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            65% { border-color: white; }
+        }
+        /* Responsive design */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1 style='flex-basis: 90%;'>Restaurant Table Booking System</h1>
+        <nav style="display: flex; align-items: center;"> <!-- Inline flex for nav -->
+            <a href='/admin' class='logBtn'>ADMIN</a>
+            <a href='/staff' class='logBtn'>STAFF</a>
+        </nav>
+    </header>
+<h2 class = 'typewriter'>Welcome, create an Account to be part of Us!</h2>
+    <main>
+        <form method="post" class='form-container'>
+            <h2>Register</h2>
+            {% csrf_token %}
+            <p>{{ form.username.label }} {{ form.username }}</p>
+            <p>{{ form.password1.label }} {{ form.password1 }}</p>
+            <p>{{ form.password2.label }} {{ form.password2 }}</p>
+            <p>Already have an Account? <a href='/accounts/login'>Sign In</a></p>
+            <button type="submit">
+        </form>
+        
+    </main>
+
+</body>
+</html>

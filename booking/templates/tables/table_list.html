@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<section class="restaurant-layout" style='flex-basis:80%;'>
+    <h1>Tables Layout</h1>
+    <div class="tables-container">
+        {% for table in tables %}
+            <div class="table-card">
+                <h3 class="table-id">Table: {{ table.number }}</h3>
+                <p class="table-capacity">Capacity: {{ table.capacity }}</p>
+                <p class="table-availability">
+                    {% if table.is_available %}
+                        <span class="available">Available</span>
+                    {% else %}
+                        <span class="not-available">Not Available</span>
+                    {% endif %}
+                </p>
+            </div>
+        {% empty %}
+            <div class="no-tables">No tables available.</div>
+        {% endfor %}
+    </div>
+</section>
+
+<style>
+    /* Style the table section */
+    .restaurant-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f0f0f0; /* Light gray background */
+    }
+
+    /* Style the tables container */
+    .tables-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+        gap: 20px; /* Space between cards */
+        width: 80%; /* Width of the grid */
+        max-height: 400px; /* Set a maximum height for scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
+        padding: 10px; /* Inner padding */
+        background-color: #fff; /* White background for the container */
+        border-radius: 8px; /* Rounded corners for the container */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+
+    /* Style each table card */
+    .table-card {
+        background-color: #fff; /* White background for cards */
+        border-radius: 8px; /* Rounded corners */
+        padding: 15px; /* Inner padding */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 1); /* Subtle shadow for depth */
+       
+    }
+
+    
+    /* Style for table ID */
+    .table-id {
+        font-size: 1.5em; /* Font size for table ID */
+        margin: 0 0 10px; /* Margin below title */
+    }
+
+    /* Style for table capacity and availability */
+    .table-capacity, .table-availability {
+        font-size: 1em; /* Font size for capacity and availability */
+        margin: 0 0 5px; /* Margin below description */
+    }
+
+    /* Style the availability spans */
+    .available {
+        color: green; /* Green for available status */
+        font-weight: bold; /* Bold text */
+    }
+
+    .not-available {
+        color: red; /* Red for not available status */
+        font-weight: bold; /* Bold text */
+    }
+
+    /* Style for no tables message */
+    .no-tables {
+        grid-column: span 3; /* Span all columns if no tables */
+        text-align: center; /* Center text */
+        font-size: 1.2em; /* Font size for no tables message */
+        color: #777; /* Gray color for no tables message */
+    }
+</style>
+{% endblock %}

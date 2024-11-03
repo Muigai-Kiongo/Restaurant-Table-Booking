@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+       #header{
+        background-color: rgba(0, 0, 128, 0.9);
+       }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        #main-content {
+            display: flex;
+            padding: 20px;
+        }
+
+        .side-nav {
+          background-color: rgba(0, 0, 128, 0.9); /* Dark blue background with slight transparency */
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          margin-right: 20px; /* Space between main content and aside */
+          flex-basis: 20%; /* Adjust width as necessary */
+      }
+
+
+      .side-nav h2 {
+          margin-top: 0;
+          color: white; /* White text color for better visibility */
+      }
+
+      .side-nav ul {
+          list-style-type: none;
+          padding: 0;
+      }
+
+      .side-nav li {
+          margin: 10px 0;
+      }
+
+      .side-nav a {
+        text-decoration: none;
+        color: #add8e6; /* Light blue link color */
+        transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    }
+    
+    .side-nav a:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add box shadow on hover */
+        transform: translateY(-2px); /* Slightly lift the link on hover */
+    }
+       
+      .form-container {
+          background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+          border-radius: 10px;
+          padding: 20px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background */
+          transition: transform 0.3s ease; /* Animation on hover */
+      }
+
+      .form-container:hover {
+          transform: translateY(-5px); /* Slightly lift the form on hover */
+      }
+
+      .booking-form h2 {
+          margin: 0 0 15px;
+          text-align: center;
+      }
+
+      button {
+          background-color: #007BFF;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+          width: 100%; /* Full width button */
+      }
+
+      button:hover {
+          background-color: #0056b3; /* Darker blue on hover */
+          transform: scale(1.05); /* Slightly enlarge on hover */
+      }
+
+      /* Background Image Styles */
+      .booking-form {
+          background-image: url({% static 'img/meals.jpg' %});
+          background-size: cover; /* Cover the entire area */
+          background-position: center; /* Center the image */
+          padding: 20px; /* Padding inside the form */
+          border-radius: 10px; /* Rounded corners */
+          color: black; /* White text for better visibility */
+      }
+
+      /* Upcoming Bookings Styles */
+      .upcoming-booking {
+          background-color: rgba(144, 238, 144, 0.7); /* Light green background */
+          padding: 10px;
+          margin: 5px 0;
+          box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+          overflow: hidden;
+          border-radius: 5px; /* Rounded corners for bookings */
+      }
+
+      #footer {
+          background-color: rgba(0, 0, 128, 0.9);
+          color: white;
+          text-align: center;
+          padding: 10px 0;
+          position: relative; /* Ensure footer is at the bottom */
+          bottom: 0;
+          width: 100%;
+      }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            #main-content {
+                flex-direction: column; /* Stack elements on smaller screens */
+            }
+
+            .side-nav {
+                margin-right: 0; /* Remove margin on smaller screens */
+                margin-bottom: 20px; /* Add margin at the bottom */
+                flex-basis: 100%; /* Full width on mobile */
+            }
+
+            .content {
+                flex-basis: 100%; /* Full width on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav class="navbar">
+            <h1 class="logo">Restaurant Table Booking System</h1>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        {% if user.is_authenticated %}
+            <aside class="side-nav">
+                <h2>Navigation</h2>
+                <ul>
+                    <li><a href="{% url 'home' %}">Dashboard</a></li>
+                    <li><a href="{% url 'booking_list' %}">Bookings</a></li>
+                    <li><a href="{% url 'tables_list' %}">Tables</a></li>
+                    <li><a href="{% url 'dishes_list' %}">Dishes</a></li>
+                </ul>
+                <br />
+                <div class="user-info">
+                    <li>{{ user.username }}</li>
+                    |
+                    <form class="form-btn" action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </aside>
+
+            {% block content %}
+            <section class="content" style='flex-basis: 40%;'>
+                <div class="booking-form">
+                    <form method="post" class="form-container">
+                        <h2>New Booking</h2>
+                        {% csrf_token %} {{ bookingform.as_p }}
+                        <button type="submit">Book</button>
+                    </form>
+                </div>
+            </section>
+            <section class="heading-content" style='flex-basis: 40%;'>
+                <div class="bookings-section">
+                    <h2>Today's Bookings</h2>
+                    <div id="bookings">
+                        {% if upcoming_bookings %}
+                            {% for booking in upcoming_bookings %}
+                                <p class="upcoming-booking">
+                                    {{ booking.date }}, {{ booking.time }} | Table {{ booking.table.id }}
+                                </p>
+                            {% endfor %}
+                        {% else %}
+                            <p>No upcoming bookings available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            {% endblock %}
+        {% else %}
+            <form class="form-container">
+                <p>Kindly Login in to Access this Page</p>
+                <a class="btn" href="/accounts/login">Login Here</a>
+            </form>
+        {% endif %}
+    </main>
+
+    <footer id="footer" style='padding: 2px;'>
+        <p>© 2024 Restaurant Table Booking System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

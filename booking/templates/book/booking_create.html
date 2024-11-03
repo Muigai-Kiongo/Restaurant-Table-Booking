@@ -1,0 +1,42 @@
+{%extends 'index.htm'%}
+{%load static%}
+
+{%block content%}
+
+<style>
+       
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+
+    .btns{
+        display: flex;
+        
+    }
+    a{
+        text-decoration: none;
+        color: white;
+        background-color: red;
+        flex-basis: 50%;
+        align-content: center;
+        text-align: center;
+        border-radius: 5px;
+        margin-right: 50px;
+        padding-right: 10px;
+    }
+
+    
+</style>
+    <form method="post">
+        <h2>New Booking</h2>
+        {% csrf_token %}
+        {{ bookingform.as_p }}
+        <div class="btns">
+        <button type="submit">Book</button>
+    <a href="/home">cancle</a>
+    </div>
+    </form>
+{%endblock%}

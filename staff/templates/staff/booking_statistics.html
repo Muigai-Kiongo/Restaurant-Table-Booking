@@ -1,0 +1,54 @@
+{% extends "staff.html" %}
+
+{% block content %}
+    
+<section style='flex-basis:80%;'>
+    <h1>Booking Statistics</h1>
+    <div class="container">
+        
+       
+        <div>
+            <h2>Busy Days (Last Week)</h2>
+            <img src="data:image/png;base64,{{ busy_days_image }}" alt="Busy Days Graph">
+        </div>
+        <div>
+            <h2>Peak Hours (Last Week)</h2>
+            <img src="data:image/png;base64,{{ peak_hours_image }}" alt="Peak Hours Graph">
+        </div>
+    </div>
+    <div>
+        <h2>Monthly Insights</h2>
+        <img src="data:image/png;base64,{{ monthly_insights_image }}" alt="Monthly Insights Graph">
+    </div>
+</section>
+<style>
+    
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+    h2 {
+        color: #555;
+        margin-top: 30px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        padding: 10px;
+    }
+    .container {
+        display:flex;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}
+

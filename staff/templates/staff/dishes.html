@@ -1,0 +1,51 @@
+{% extends 'staff.html' %}
+
+{% block content %}
+<section style='flex-basis:80%;'>
+    <h1>Dishes</h1>
+    <div class="dishes-container">
+        {% for dish in dishes %}
+            <div class="dish-card">
+                <h2 class="dish-title">{{ dish.name }}</h2>
+                <p class="dish-description">{{ dish.description }}</p>
+                <p class="dish-price">${{ dish.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+<style>
+    .dishes-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px; /* Space between grid items */
+        padding: 20px;
+    }
+    
+    .dish-card {
+        border: 1px solid #ccc; /* Light border around each dish */
+        border-radius: 8px; /* Rounded corners */
+        padding: 20px; /* Inner padding */
+        background-color: #ffffff; /* White background for better visibility */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+    
+    
+    
+    .dish-title {
+        font-size: 1.5em; /* Title font size */
+        margin: 0 0 10px; /* Margin below title */
+        color: #333; /* Dark color for title for better visibility */
+    }
+    
+    .dish-description {
+        font-size: 1em; /* Description font size */
+        margin: 0 0 10px; /* Margin below description */
+        color: #555; /* Darker color for description */
+    }
+    
+    .dish-price {
+        font-size: 1.2em; /* Price font size */
+        color: #333; /* Darker color for price */
+    }
+</style>
+{% endblock %}

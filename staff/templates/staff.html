@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>R Management | Overview</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fa; /* Light background color for the whole page */
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        color: #fff;
+        margin: 0;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        padding: 20px;
+      }
+
+      .logo {
+        flex-basis: 90%;
+        font-size: 24px;
+      }
+
+      .subnav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: #444;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .subnav a {
+        text-decoration: none;
+        padding: 10px 15px;
+        color: #fff;
+        transition: background-color 0.3s;
+      }
+
+      .subnav a:hover {
+        background-color: #555;
+        border-radius: 5px; /* Rounded corners for hover effect */
+      }
+
+      .container {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff; /* White background for the container */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      }
+
+      h2 {
+        color: #333; /* Darker color for headings */
+        margin-top: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+        cursor: pointer;
+      }
+
+      tr:active {
+        background-color: #e0e0e0;
+      }
+
+      .form-btn {
+        margin-left: 20px;
+      }
+
+      button {
+        background-color: #dc3545; /* Red color for logout button */
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #c82333; /* Darker red on hover */
+      }
+
+      .search-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .search-container input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px; /* Fixed width for the search input */
+      }
+
+      .search-container button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff; /* Blue color for search button */
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background-color 0.3s;
+      }
+
+      .search-container button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+      }
+
+     
+    </style>
+  </head>
+
+  <body>
+    <header id="header">
+      <nav class="navbar">
+        <h1 class="logo">Restaurant Table Booking Management System (STAFF)</h1>
+        <div style = 'display:inline-flex;'>
+          <span>{{ user.username }}</span>
+          |
+          <form class="form-btn" action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </nav>
+      <nav class="subnav">
+        <a href="{% url 'staff_home' %}">Home</a>
+        <a href="{% url 'tables' %}">Tables</a>
+        <a href="{% url 'dishes' %}">Dishes</a>
+        <a href="{% url 'booking_statistics' %}">Reports</a>
+      </nav>
+    </header>
+
+    {% block content %}
+    <div class="container">
+      <!-- Search Functionality -->
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by Username..." />
+        <button onclick="searchBookings()">Search</button>
+      </div>
+
+      <h2>Today's Bookings</h2>
+      <table id="todayBookings">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Table Number</th>
+            <th>Booking Time</th>
+            <th>Dish</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in today_bookings %}
+          <tr onclick="window.location='{% url 'book_detail' booking.id %}'" style="cursor: pointer;">
+            <td>{{ booking.user }}</td>
+            <td>{{ booking.table.number }}</td>
+            <td>{{ booking.time }}</td>
+            <td>{{ booking.meal }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">No bookings available for today.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>Tomorrow's Bookings</h2>
+      <table id="tomorrowBookings">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Table Number</th>
+            <th>Booking Time</th>
+            <th>Dish</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in tomorrow_bookings %}
+          <tr onclick="window.location='{% url 'book_detail' booking.id %}'" style="cursor: pointer;">
+            <td>{{ booking.user }}</td>
+            <td>{{ booking.table.number }}</td>
+            <td>{{ booking.time }}</td>
+            <td>{{ booking.meal }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">No bookings available for tomorrow.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>Upcoming Bookings</h2>
+      <table id="upcomingBookings">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Table Number</th>
+            <th>Date</th>
+            <th>Booking Time</th>
+            <th>Dish</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in other_bookings %}
+          <tr onclick="window.location='{% url 'book_detail' booking.id %}'" style="cursor: pointer;">
+            <td>{{ booking.user }}</td>
+            <td>{{ booking.table.number }}</td>
+            <td>{{ booking.date }}</td>
+            <td>{{ booking.time }}</td>
+            <td>{{ booking.meal }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">No other bookings available.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endblock %}
+
+    <script>
+      // Function to search bookings by username
+      function searchBookings() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const tables = ['todayBookings', 'tomorrowBookings', 'upcomingBookings'];
+
+        tables.forEach(tableId => {
+          const table = document.getElementById(tableId);
+          const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+          let found = false;
+
+          for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            if (cells.length > 0) {
+              const customerName = cells[0].textContent.toLowerCase();
+              if (customerName.includes(input)) {
+                rows[i].style.display = ''; // Show row
+                found = true;
+              } else {
+                rows[i].style.display = 'none'; // Hide row
+              }
+            }
+          }
+
+          // If no rows found, you can optionally show a message
+          if (!found) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `<td colspan="${rows[0].getElementsByTagName('td').length}">No bookings found for "${input}".</td>`;
+            table.getElementsByTagName('tbody')[0].appendChild(emptyRow);
+          } else {
+            // Remove any previously added empty row if found
+            const existingRows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            for (let j = 0; j < existingRows.length; j++) {
+              if (existingRows[j].textContent.includes('No bookings found')) {
+                existingRows[j].remove();
+                break;
+              }
+            }
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

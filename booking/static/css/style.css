@@ -1,0 +1,120 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    
+}
+
+header,
+footer {
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Adjusted for inline flex */
+        text-align: left;
+        background-color: rgba(51, 51, 51, 0.8);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Box shadow for header */
+        padding: 10px 20px; /* Padding for header */
+        padding: 15px 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+}
+
+.side-nav {
+    background-color: #333;
+    width: 200px;
+    padding: 15px;
+    color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.side-nav h2 {
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.side-nav ul {
+    list-style-type: none;
+    padding: 0;
+
+}
+
+.side-nav li {
+    margin-bottom: 10px;
+
+}
+
+.side-nav a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-top: 2px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.side-nav a:hover {
+    background-color: #0056b3;
+    border-color: #007BFF;
+}
+
+.side-nav .user-info {
+    display: flex;
+    align-items: baseline;
+    margin-top: 20px;
+    list-style: none;
+    text-transform: capitalize;
+
+}
+.side-nav .user-info li, .side-nav .user-info .form-btn{
+    margin: 10px;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    height: 80vh;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    
+}
+
+.bookings-section {
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Box shadow */
+    backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background behind the form */
+}
+
+.form-btn {
+    display: inline;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
