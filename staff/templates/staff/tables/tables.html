@@ -2,24 +2,32 @@
 
 {% block content %}
 <section class="restaurant-layout" style='flex-basis:80%;'>
-    <h1>Tables Layout</h1>
-    <div class="tables-container">
-        {% for table in tables %}
-            <div class="table-card">
-                <h3 class="table-id">Table: {{ table.number }}</h3>
-                <p class="table-capacity">Capacity: {{ table.capacity }}</p>
-                <p class="table-availability">
-                    {% if table.is_available %}
-                        <span class="available">Available</span>
-                    {% else %}
-                        <span class="not-available">Not Available</span>
-                    {% endif %}
-                </p>
-            </div>
-        {% empty %}
-            <div class="no-tables">No tables available.</div>
-        {% endfor %}
-    </div>
+        <h1>Tables Layout</h1>
+       
+        <div class="tables-container">
+            {% for table in tables %}
+            <a href="{% url 'update_table' table.pk %}" style ='text-decoration:none;'>
+                <div class="table-card">
+                    <h3 class="table-id">Table: {{ table.number }}</h3>
+                    <p class="table-capacity">Capacity: {{ table.capacity }}</p>
+                    <p class="table-availability">
+                        {% if table.is_available %}
+                            <span class="available">Available</span>
+                        {% else %}
+                            <span class="not-available">Not Available</span>
+                        {% endif %}
+                    </p>
+                    
+                    
+                </div>
+            </a>
+            {% empty %}
+                <div class="no-tables">No tables available.</div>
+            {% endfor %}
+
+            <a href="{% url 'create_table' %}" class = 'create-button'>
+               +</a>
+        </div>
 </section>
 
 <style>
@@ -82,6 +90,30 @@
         text-align: center; /* Center text */
         font-size: 1.2em; /* Font size for no tables message */
         color: #777; /* Gray color for no tables message */
+    }
+
+    .create-button {
+        position: fixed; /* Fixed positioning to keep it in view */
+        bottom: 20px; /* Distance from the bottom */
+        right: 20px; /* Distance from the right */
+        width: 56px; /* Width of the button */
+        height: 56px; /* Height of the button */
+        background-color: #28a745; /* Green background */
+        color: white; /* White icon color */
+        border-radius: 50%; /* Make it round */
+        display: flex; /* Center the SVG */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+        text-decoration: none; /* Remove underline from link */
+        transition: background-color 0.3s; /* Smooth transition for hover effect */
+        font-weight:bold;
+        font-size:25px;
+    }
+    
+    .create-button:hover {
+        background-color: #218838; /* Darker green on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
     }
 </style>
 {% endblock %}

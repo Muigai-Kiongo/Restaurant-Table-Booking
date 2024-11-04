@@ -1,0 +1,13 @@
+{% extends 'staff.html' %}
+
+{% block content %}
+<section class="table-form">
+    <h1>{{ title }}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Table</button>
+    </form>
+    <a href="{% url 'tables' %}">Cancel</a>
+</section>
+{% endblock %}
