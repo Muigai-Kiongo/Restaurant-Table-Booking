@@ -11,5 +11,7 @@ urlpatterns = [
     path('booking/<pk>/delete/', views.BookingDeleteView, name='booking_delete'),
     path('tables/', views.Tablesview, name='tables_list'),
     path('dishes/', views.Dishesview, name='dishes_list'),
+     path('reports/', views.reports_view, name = 'reports-view'),
+    path('reports/download/<str:report_type>/', views.download_report, name='download_report'),
  
 ]

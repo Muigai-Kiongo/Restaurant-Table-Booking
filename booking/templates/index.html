@@ -203,6 +203,7 @@
                     <li><a href="{% url 'booking_list' %}">Bookings</a></li>
                     <li><a href="{% url 'tables_list' %}">Tables</a></li>
                     <li><a href="{% url 'dishes_list' %}">Dishes</a></li>
+                    <li><a href="{% url 'reports-view' %}">Reports</a></li>
                 </ul>
                 <br />
                 <div class="user-info">
@@ -238,9 +239,9 @@
                 </div>
             </section>
             <section class="heading-content" style='flex-basis: 40%;'>
-                <div class="bookings-section">
+                <div class="bookings-section" >
                     <h2>Today's Bookings</h2>
-                    <div id="bookings">
+                    <div id="bookings" style ='overflow:auto;'>
                         {% if upcoming_bookings %}
                             {% for booking in upcoming_bookings %}
                                 <p class="upcoming-booking">
