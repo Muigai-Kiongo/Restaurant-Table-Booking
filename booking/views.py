@@ -13,29 +13,17 @@ import base64
 from staff.forms import ReportForm, TableForm
 from django.template.loader import render_to_string
 from weasyprint import HTML
-
-
-
-
-
-current_date = datetime.now().date()
-tables = Table.objects.all()
-dishes = Meal.objects.all()
-
+from django.http import HttpResponse
 
 @login_required
 def index(request):
-    upcoming_bookings = Booking.objects.filter(user=request.user ,date=current_date)
+    upcoming_bookings = Booking.objects.upcoming_for_user(request.user)
     if request.method == 'POST':
         bookingform = BookingForm(request.POST)
         if bookingform.is_valid():
             booking = bookingform.save(commit=False)
             booking.user = request.user
             booking.save()
-           
-
-
-
     else:
         bookingform = BookingForm()
 
@@ -46,37 +34,30 @@ def index(request):
     return render(request, "index.html", context)
 
 
+@login_required
 def BookingListView(request):
-    current_datetime = timezone.now()  # Get the current date and time
-    bookings = Booking.objects.filter(user=request.user).order_by('date', 'time')  # Order by date and time
-
-    past_bookings = []
-    upcoming_bookings = []
-
-    for booking in bookings:
-        if booking.date < current_datetime.date() or (booking.date == current_datetime.date() and booking.time < current_datetime.time()):
-            past_bookings.append(booking)
-        else:
-            upcoming_bookings.append(booking)
+    upcoming_bookings = Booking.objects.upcoming_for_user(request.user)
+    past_bookings = Booking.objects.past_for_user(request.user)
 
     context = {
         "title": "Booking List",
         'upcoming_bookings': upcoming_bookings,
         'past_bookings': past_bookings,
-        "current_date": current_datetime.date(),
+        "current_date": timezone.now().date(),
     }
     return render(request, "book/booking_list.html", context)
 
+@login_required
 def BookingDetailView(request, pk):
-    booking = get_object_or_404(Booking, pk=pk)
+    booking = get_object_or_404(Booking.objects.with_relations(), pk=pk)
     context = {
         "title": "Booking Details",
         "booking": booking
     }
     return render(request, "book/booking_detail.html", context)
 
+@login_required
 def BookingUpdateView(request, pk):
-
     booking = get_object_or_404(Booking, pk=pk)
     if request.method == "POST":
         form = BookingForm(request.POST, instance=booking)
@@ -91,6 +72,7 @@ def BookingUpdateView(request, pk):
     }
     return render(request, "book/booking_update.html", context)
 
+@login_required
 def BookingDeleteView(request, pk):
     booking = get_object_or_404(Booking, pk=pk)
     if request.method == "POST":
@@ -108,24 +90,24 @@ def BookingDeleteView(request, pk):
         "title": "Delete Booking",
         "booking": booking
     }
-    return render(request, "book/booking_delete.htm", context)
+    return render(request, "book/booking_delete.html", context)
 
 
 def Tablesview(request):
+    tables = Table.objects.all()
     context ={
         'tables': tables,
     }
-
     return render(request, 'tables/table_list.html', context)
 
 def Dishesview(request):
+    dishes = Meal.objects.all()
     context = {
         'dishes' : dishes,
     }
-
     return render (request, 'dishes/dishes.html', context)
 
-
+@login_required
 def reports_view(request):
     report_html = None
     report_type = None
@@ -134,7 +116,7 @@ def reports_view(request):
         form = ReportForm(request.POST)
         if form.is_valid():
             report_type = form.cleaned_data['report_type']
-            bookings = get_bookings(report_type)  # Helper function to get bookings
+            bookings = Booking.objects.get_by_report_type(report_type)
             report_html = render_to_string(f'reports/{report_type}_report.html', {'bookings': bookings})
     else:
         form = ReportForm()
@@ -145,19 +127,6 @@ def reports_view(request):
         'report_type': report_type,
     })
 
-def get_bookings(report_type):
-    now = timezone.now()
-    if report_type == 'weekly':
-        week_start = now - timezone.timedelta(days=7)
-        return Booking.objects.filter(date__gte=week_start)
-    elif report_type == 'monthly':
-        month_start = now.replace(day=1)
-        return Booking.objects.filter(date__gte=month_start)
-    elif report_type == 'yearly':
-        year_start = now.replace(month=1, day=1)
-        return Booking.objects.filter(date__gte=year_start)
-    return Booking.objects.none()
-
 def generate_pdf_response(html_string, filename):
     html = HTML(string=html_string)
     pdf = html.write_pdf()
@@ -165,7 +134,8 @@ def generate_pdf_response(html_string, filename):
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
 
+@login_required
 def download_report(request, report_type):
-    bookings = get_bookings(report_type)
+    bookings = Booking.objects.get_by_report_type(report_type)
     html_string = render_to_string(f'reports/{report_type}_report.html', {'bookings': bookings})
     return generate_pdf_response(html_string, f'{report_type}_report.pdf')

@@ -4,7 +4,8 @@
     <h1>Yearly Reports</h1>
     <div class="container">
 
-        <form>
+        <form method="post">
+        {% csrf_token %}
             {{form.as_p}}
         </form>
 
