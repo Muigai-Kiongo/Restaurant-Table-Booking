@@ -256,7 +256,8 @@
             </section>
             {% endblock %}
         {% else %}
-            <form class="form-container">
+            <form method="post" class="form-container">
+            {% csrf_token %}
                 <p>Kindly Login in to Access this Page</p>
                 <a class="btn" href="/accounts/login">Login Here</a>
             </form>
