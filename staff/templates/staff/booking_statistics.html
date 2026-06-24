@@ -1,54 +1,58 @@
-{% extends "staff.html" %}
+{% extends 'staff.html' %}
+
+{% block title %}Booking Insights | Gourmet Reserve Staff{% endblock %}
 
 {% block content %}
-    
-<section style='flex-basis:80%;'>
-    <h1>Booking Statistics</h1>
-    <div class="container">
-        
-       
-        <div>
-            <h2>Busy Days (Last Week)</h2>
-            <img src="data:image/png;base64,{{ busy_days_image }}" alt="Busy Days Graph">
-        </div>
-        <div>
-            <h2>Peak Hours (Last Week)</h2>
-            <img src="data:image/png;base64,{{ peak_hours_image }}" alt="Peak Hours Graph">
-        </div>
+<div class="row g-4">
+    <div class="col-12">
+        <h2 class="section-title h3 mb-1">Booking Insights &amp; Statistics</h2>
+        <p class="text-muted">Analyze weekly and monthly reservation trends to optimize table capacity and staffing.</p>
     </div>
-    <div>
-        <h2>Monthly Insights</h2>
-        <img src="data:image/png;base64,{{ monthly_insights_image }}" alt="Monthly Insights Graph">
-    </div>
-</section>
-<style>
-    
-    h1 {
-        color: #333;
-        text-align: center;
-    }
-    h2 {
-        color: #555;
-        margin-top: 30px;
-    }
-    img {
-        max-width: 100%;
-        height: auto;
-        margin: 0 auto;
-        display: block;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-        padding: 10px;
-    }
-    .container {
-        display:flex;
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-    }
-</style>
-{% endblock %}
 
+    <!-- Charts -->
+    <div class="col-12 col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light py-3">
+                <h3 class="h5 mb-0 fw-semibold text-dark"><i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>Busy Days (Last Week)</h3>
+            </div>
+            <div class="card-body p-3 text-center">
+                {% if busy_days_image %}
+                    <img src="data:image/png;base64,{{ busy_days_image }}" alt="Busy Days Graph" class="img-fluid rounded border p-2 bg-white shadow-sm" />
+                {% else %}
+                    <p class="text-muted py-5">No weekly daily reservation data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light py-3">
+                <h3 class="h5 mb-0 fw-semibold text-dark"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Peak Hours (Last Week)</h3>
+            </div>
+            <div class="card-body p-3 text-center">
+                {% if peak_hours_image %}
+                    <img src="data:image/png;base64,{{ peak_hours_image }}" alt="Peak Hours Graph" class="img-fluid rounded border p-2 bg-white shadow-sm" />
+                {% else %}
+                    <p class="text-muted py-5">No weekly hourly reservation data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light py-3">
+                <h3 class="h5 mb-0 fw-semibold text-dark"><i class="bi bi-calendar-range me-2 text-primary"></i>Monthly Reservation Trends</h3>
+            </div>
+            <div class="card-body p-3 text-center">
+                {% if monthly_insights_image %}
+                    <img src="data:image/png;base64,{{ monthly_insights_image }}" alt="Monthly Insights Graph" class="img-fluid rounded border p-2 bg-white shadow-sm mx-auto d-block" style="max-height: 450px;" />
+                {% else %}
+                    <p class="text-muted py-5">No monthly reservation trends data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

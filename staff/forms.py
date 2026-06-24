@@ -7,10 +7,19 @@ class ReportForm(forms.Form):
         ('monthly', 'Monthly Report'),
         ('yearly', 'Yearly Report'),
     ]
-    report_type = forms.ChoiceField(choices=REPORT_CHOICES, label="Select Report Type")
+    report_type = forms.ChoiceField(
+        choices=REPORT_CHOICES,
+        label="Select Report Type",
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
 
 
 class TableForm(forms.ModelForm):
     class Meta:
         model = Table
         fields = ['number', 'capacity', 'is_available']
+        widgets = {
+            'number': forms.NumberInput(attrs={'class': 'form-control'}),
+            'capacity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'is_available': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }

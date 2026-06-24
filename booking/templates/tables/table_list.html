@@ -1,89 +1,45 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
+
+{% block title %}Tables Layout | Gourmet Reserve{% endblock %}
 
 {% block content %}
-<section class="restaurant-layout" style='flex-basis:80%;'>
-    <h1>Tables Layout</h1>
-    <div class="tables-container">
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h1 class="section-title h2 mb-1">Tables Layout</h1>
+            <p class="text-muted mb-0">Select and view the availability of dining tables in our restaurant.</p>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         {% for table in tables %}
-            <div class="table-card">
-                <h3 class="table-id">Table: {{ table.number }}</h3>
-                <p class="table-capacity">Capacity: {{ table.capacity }}</p>
-                <p class="table-availability">
-                    {% if table.is_available %}
-                        <span class="available">Available</span>
-                    {% else %}
-                        <span class="not-available">Not Available</span>
-                    {% endif %}
-                </p>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 bg-white">
+                    <div class="card-body p-4 d-flex flex-column justify-content-between">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h3 class="h5 mb-0 fw-bold text-dark">Table {{ table.number }}</h3>
+                            <i class="bi bi-door-closed text-muted fs-4"></i>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-muted mb-2"><i class="bi bi-people me-2"></i>Capacity: <strong>{{ table.capacity }}</strong> people</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-auto">
+                            <span class="text-muted small">Status</span>
+                            {% if table.is_available %}
+                                <span class="badge badge-available">Available</span>
+                            {% else %}
+                                <span class="badge badge-unavailable">Occupied</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         {% empty %}
-            <div class="no-tables">No tables available.</div>
+            <div class="col-12 py-5 text-center">
+                <i class="bi bi-table fs-1 text-secondary mb-3 d-block"></i>
+                <p class="text-muted mb-0">No dining tables are configured in the system.</p>
+            </div>
         {% endfor %}
     </div>
-</section>
-
-<style>
-    /* Style the table section */
-    .restaurant-layout {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #f0f0f0; /* Light gray background */
-    }
-
-    /* Style the tables container */
-    .tables-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-        gap: 20px; /* Space between cards */
-        width: 80%; /* Width of the grid */
-        max-height: 400px; /* Set a maximum height for scrolling */
-        overflow-y: auto; /* Enable vertical scrolling */
-        padding: 10px; /* Inner padding */
-        background-color: #fff; /* White background for the container */
-        border-radius: 8px; /* Rounded corners for the container */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    }
-
-    /* Style each table card */
-    .table-card {
-        background-color: #fff; /* White background for cards */
-        border-radius: 8px; /* Rounded corners */
-        padding: 15px; /* Inner padding */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 1); /* Subtle shadow for depth */
-       
-    }
-
-    
-    /* Style for table ID */
-    .table-id {
-        font-size: 1.5em; /* Font size for table ID */
-        margin: 0 0 10px; /* Margin below title */
-    }
-
-    /* Style for table capacity and availability */
-    .table-capacity, .table-availability {
-        font-size: 1em; /* Font size for capacity and availability */
-        margin: 0 0 5px; /* Margin below description */
-    }
-
-    /* Style the availability spans */
-    .available {
-        color: green; /* Green for available status */
-        font-weight: bold; /* Bold text */
-    }
-
-    .not-available {
-        color: red; /* Red for not available status */
-        font-weight: bold; /* Bold text */
-    }
-
-    /* Style for no tables message */
-    .no-tables {
-        grid-column: span 3; /* Span all columns if no tables */
-        text-align: center; /* Center text */
-        font-size: 1.2em; /* Font size for no tables message */
-        color: #777; /* Gray color for no tables message */
-    }
-</style>
+</div>
 {% endblock %}

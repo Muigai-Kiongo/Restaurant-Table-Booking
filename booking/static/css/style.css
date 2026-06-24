@@ -1,120 +1,339 @@
+/* ==========================================================================
+   Restaurant Table Booking — Premium Theme
+   ========================================================================== */
+
+:root {
+    --primary-color: #1e3a8a;      /* Deep navy blue */
+    --primary-dark: #172554;       /* Darker navy */
+    --primary-light: #3b82f6;      /* Bright blue */
+    --secondary-color: #475569;    /* Slate grey */
+    --accent-color: #38bdf8;       /* Light blue accent */
+    
+    --bg-color: #f8fafc;           /* Very light slate background */
+    --surface-color: #ffffff;      /* White cards & form panels */
+    --surface-muted: #f1f5f9;      /* Slightly darker slate panels */
+    --text-color: #0f172a;         /* Slate almost black text */
+    --muted-color: #64748b;        /* Muted slate text */
+    --border-color: #e2e8f0;       /* Light slate border */
+
+    --success-color: #059669;      /* Emerald green */
+    --danger-color: #dc2626;       /* Red */
+
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Outfit', system-ui, sans-serif;
+    --radius: 12px;
+    --shadow-sm: 0 4px 10px rgba(140, 37, 18, 0.04);
+    --shadow-md: 0 10px 30px rgba(140, 37, 18, 0.08);
+    --transition: all 0.3s ease;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    
+    font-family: var(--font-body);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
 }
 
-header,
-footer {
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between; /* Adjusted for inline flex */
-        text-align: left;
-        background-color: rgba(51, 51, 51, 0.8);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Box shadow for header */
-        padding: 10px 20px; /* Padding for header */
-        padding: 15px 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-
+h1, h2, h3, h4, h5, h6, .section-title {
+    font-family: var(--font-heading);
+    color: var(--text-color);
+    font-weight: 600;
 }
 
-.side-nav {
-    background-color: #333;
-    width: 200px;
-    padding: 15px;
-    color: #fff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-}
-
-.side-nav h2 {
-    margin-bottom: 1.5rem;
-    color: #fff;
-}
-
-.side-nav ul {
-    list-style-type: none;
-    padding: 0;
-
-}
-
-.side-nav li {
-    margin-bottom: 10px;
-
-}
-
-.side-nav a {
-    color: #fff;
+a {
+    color: var(--primary-color);
+    transition: var(--transition);
     text-decoration: none;
-    display: block;
-    padding: 10px;
-    border-top: 2px solid transparent;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
-.side-nav a:hover {
-    background-color: #0056b3;
-    border-color: #007BFF;
+a:hover {
+    color: var(--primary-dark);
 }
 
-.side-nav .user-info {
-    display: flex;
-    align-items: baseline;
-    margin-top: 20px;
-    list-style: none;
-    text-transform: capitalize;
-
+/* Navbar */
+.app-navbar {
+    background-color: var(--primary-dark);
+    box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+    padding: 0.8rem 0;
 }
-.side-nav .user-info li, .side-nav .user-info .form-btn{
-    margin: 10px;
+.app-navbar .navbar-brand .brand-text {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    letter-spacing: 0.5px;
 }
-
-main {
-    display: flex;
-    justify-content: space-between;
-    height: 80vh;
-    padding-top: 10px;
-    padding-bottom: 15px;
-    
+.app-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 500;
+    transition: var(--transition);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
 }
-
-.bookings-section {
-    border-radius: 5px;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+.app-navbar .nav-link:hover, 
+.app-navbar .nav-link:focus {
+    color: var(--accent-color) !important;
 }
-
-.form-container {
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Box shadow */
-    backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background behind the form */
+.app-navbar .nav-link.active {
+    color: #fff !important;
+    border-bottom-color: var(--accent-color);
 }
 
-.form-btn {
-    display: inline;
+/* Secondary Navigation for Staff */
+.app-subnav {
+    background-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    padding: 0.5rem 0;
+}
+.app-subnav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 6px 16px !important;
+    border-radius: 50px;
+    transition: var(--transition);
+}
+.app-subnav .nav-link:hover,
+.app-subnav .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff !important;
+}
+.app-subnav .nav-link.active {
+    background-color: #fff;
+    color: var(--primary-dark) !important;
 }
 
-h2 {
-    margin-bottom: 1.5rem;
-    color: #333;
+/* Footer */
+.app-footer {
+    background-color: var(--primary-dark);
+    color: rgba(255, 255, 255, 0.7);
 }
 
-button {
-    background-color: #007BFF;
+/* Buttons */
+.btn {
+    border-radius: 50px;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    transition: var(--transition);
+}
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
     color: #fff;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 100%;
+}
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: #b7731d;
+    border-color: #b7731d;
+    color: #fff;
+}
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
 }
 
-button:hover {
-    background-color: #0056b3;
+/* Section Header Decoration */
+.section-title {
+    position: relative;
+    padding-bottom: 0.75rem;
+    margin-bottom: 2rem;
+}
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+}
+
+/* Cards */
+.card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    background-color: var(--surface-color);
+    overflow: hidden;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+.card-header {
+    background-color: var(--surface-muted) !important;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-heading);
+    color: var(--text-color);
+}
+
+/* Forms Card Layout */
+.form-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 2.2rem;
+}
+
+/* Styling for generic form fields */
+.form-card input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.form-card select,
+.form-card textarea,
+input.form-control,
+select.form-select,
+textarea.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus,
+input.form-control:focus,
+select.form-select:focus,
+textarea.form-control:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px rgba(178, 58, 34, 0.12);
+    outline: none;
+}
+
+.form-card p {
+    margin-bottom: 1.25rem;
+}
+.form-card label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+.form-card ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    color: var(--danger-color);
+    font-size: 0.875rem;
+}
+.helptext {
+    display: block;
+    color: var(--muted-color);
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+}
+
+/* Tables */
+.table {
+    margin-bottom: 0;
+}
+.table thead th {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+    border-bottom: 2px solid var(--primary-dark) !important;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+}
+.table tbody td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}
+
+/* Availability Badges */
+.badge-available {
+    background-color: rgba(46, 125, 50, 0.15) !important;
+    color: var(--success-color) !important;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 50px;
+    border: 1px solid rgba(46, 125, 50, 0.3);
+}
+.badge-unavailable {
+    background-color: rgba(192, 57, 43, 0.1) !important;
+    color: var(--danger-color) !important;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 50px;
+    border: 1px solid rgba(192, 57, 43, 0.2);
+}
+
+/* Auth Backdrop page */
+.auth-page {
+    background: linear-gradient(rgba(140, 37, 18, 0.65), rgba(44, 39, 36, 0.85)),
+        url("../img/restaurant.jpg") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+/* Sidebar Layout */
+.app-wrapper {
+    display: flex;
+    flex-direction: row; /* Ensure it's a row on large screens */
+    flex: 1;
+    min-height: calc(100vh - 56px); /* adjust based on top nav height */
+}
+
+.app-sidebar {
+    width: 250px;
+    background-color: var(--primary-dark);
+    color: #fff;
+    flex-shrink: 0;
+    transition: var(--transition);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Make the sidebar sticky ONLY on large screens to avoid breaking mobile offcanvas */
+@media (min-width: 992px) {
+    .app-sidebar {
+        position: sticky;
+        top: 56px; /* Height of the navbar */
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+    }
+}
+
+.app-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    padding: 12px 20px;
+    font-weight: 500;
+    border-radius: 0;
+    border-left: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.app-sidebar .nav-link:hover, 
+.app-sidebar .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color) !important;
+}
+
+.app-sidebar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff !important;
+    border-left-color: var(--accent-color);
+}
+
+.app-main-content {
+    flex-grow: 1;
+    min-width: 0; /* Prevents overflow */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }

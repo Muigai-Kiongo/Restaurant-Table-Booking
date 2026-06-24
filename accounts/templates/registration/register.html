@@ -1,108 +1,53 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh; /* Ensures body takes full height */
-            background-image: url({% static 'img/restaurant.jpg' %});
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover; 
-        }
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80vh;
-        }
-      
-       
-        .logBtn {
-            text-decoration: none;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-left: 10px; /* Space between buttons */
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
-        }
-        .logBtn:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: scale(1.05); /* Slightly enlarge on hover */
-        }
-        button {
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
-        }
-        button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: scale(1.05); /* Slightly enlarge on hover */
-        }
-      
-        .typewriter {
-            backdrop-filter: blur(10px);
-            text-align:center;
-            color: black;
-            font-size: 2em; /* Adjust font size as needed */
-            font-family: 'Courier New', Courier, monospace; /* Typewriter-style font */
-            white-space: nowrap; /* Prevent line breaks */
-            overflow: hidden; /* Hides the overflow */
-            border-right: 3px solid white; /* Cursor effect */
-            animation: typing 4s steps(30, end) forwards, blink-caret 0.75s step-end infinite; /* Animation */
-        }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 65%; }
-        }
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            65% { border-color: white; }
-        }
-        /* Responsive design */
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
-</head>
-<body>
-    
-    <header>
-        <h1 style='flex-basis: 90%;'>Restaurant Table Booking System</h1>
-        <nav style="display: flex; align-items: center;"> <!-- Inline flex for nav -->
-            <a href='/admin' class='logBtn'>ADMIN</a>
-            <a href='/staff' class='logBtn'>STAFF</a>
-        </nav>
-    </header>
-<h2 class = 'typewriter'>Welcome, create an Account to be part of Us!</h2>
-    <main>
-        <form method="post" class='form-container'>
-            <h2>Register</h2>
-            {% csrf_token %}
-            <p>{{ form.username.label }} {{ form.username }}</p>
-            <p>{{ form.password1.label }} {{ form.password1 }}</p>
-            <p>{{ form.password2.label }} {{ form.password2 }}</p>
-            <p>Already have an Account? <a href='/accounts/login'>Sign In</a></p>
-            <button type="submit">Register</button>
-        </form>
-        
-    </main>
 
-</body>
-</html>
+{% block title %}Register | Gourmet Reserve{% endblock %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center py-4 py-md-5">
+    <div class="col-12 col-md-6">
+        <div class="card bg-white p-4 p-md-5 rounded shadow-lg">
+            <h2 class="section-title h3 text-center mb-4">Create Account</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger shadow-sm">
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-0 small"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+                        <input type="{% if 'password' in field.name %}password{% else %}text{% endif %}" 
+                               name="{{ field.html_name }}" 
+                               id="{{ field.auto_id }}" 
+                               class="form-control {% if field.errors %}is-invalid{% endif %}" 
+                               value="{{ field.value|default_if_none:'' }}" 
+                               placeholder="Enter {{ field.label|lower }}"
+                               required />
+                        {% if field.help_text %}
+                            <div class="form-text text-muted small">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary w-100 mt-2 py-2 fs-6">
+                    <i class="bi bi-person-plus me-1"></i>Register
+                </button>
+            </form>
+            <div class="text-center mt-4 border-top pt-3">
+                <p class="mb-0 text-muted">Already have an account? <a href="{% url 'login' %}" class="fw-semibold text-primary">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

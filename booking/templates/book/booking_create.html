@@ -1,42 +1,49 @@
-{%extends 'index.htm'%}
-{%load static%}
+{% extends 'base.html' %}
+{% load static %}
 
-{%block content%}
+{% block title %}New Booking | Gourmet Reserve{% endblock %}
 
-<style>
-       
-    main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 80vh;
-    }
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="form-card shadow-sm">
+            <h2 class="section-title h3 mb-4">New Booking</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if bookingform.non_field_errors %}
+                    <div class="alert alert-danger shadow-sm">
+                        {% for error in bookingform.non_field_errors %}
+                            <p class="mb-0 small"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-    .btns{
-        display: flex;
-        
-    }
-    a{
-        text-decoration: none;
-        color: white;
-        background-color: red;
-        flex-basis: 50%;
-        align-content: center;
-        text-align: center;
-        border-radius: 5px;
-        margin-right: 50px;
-        padding-right: 10px;
-    }
+                {% for field in bookingform %}
+                    {% if not field.is_hidden %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text text-muted">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
 
-    
-</style>
-    <form method="post">
-        <h2>New Booking</h2>
-        {% csrf_token %}
-        {{ bookingform.as_p }}
-        <div class="btns">
-        <button type="submit">Book</button>
-    <a href="/home">cancle</a>
+                <div class="d-flex gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary flex-grow-1 py-2">
+                        <i class="bi bi-calendar-plus me-1"></i>Book Table
+                    </button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4 py-2">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
-    </form>
-{%endblock%}
+</div>
+{% endblock %}

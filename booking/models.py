@@ -61,12 +61,26 @@ class BookingManager(models.Manager):
 
 
 class Booking(models.Model):
+    PAYMENT_METHOD_CHOICES = [
+        ('Cash', 'Cash on Arrival'),
+        ('M-Pesa', 'M-Pesa STK Push'),
+    ]
+
+    PAYMENT_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Completed', 'Completed'),
+        ('Failed', 'Failed'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateField()
     time = models.TimeField()
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
-    meal_option = models.ForeignKey(Meal, on_delete=models.CASCADE, null=True)
-    phone_number = models.CharField(max_length=15, null=True)
+    meal_option = models.ForeignKey(Meal, on_delete=models.CASCADE, null=True, blank=True)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='Cash')
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    mpesa_receipt_number = models.CharField(max_length=50, null=True, blank=True)
 
     objects = BookingManager()
 

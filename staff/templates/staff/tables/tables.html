@@ -1,119 +1,50 @@
 {% extends 'staff.html' %}
 
+{% block title %}Manage Tables | Gourmet Reserve Staff{% endblock %}
+
 {% block content %}
-<section class="restaurant-layout" style='flex-basis:80%;'>
-        <h1>Tables Layout</h1>
-       
-        <div class="tables-container">
-            {% for table in tables %}
-            <a href="{% url 'update_table' table.pk %}" style ='text-decoration:none;'>
-                <div class="table-card">
-                    <h3 class="table-id">Table: {{ table.number }}</h3>
-                    <p class="table-capacity">Capacity: {{ table.capacity }}</p>
-                    <p class="table-availability">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+        <h2 class="section-title h3 mb-1">Dining Tables Layout</h2>
+        <p class="text-muted mb-0">Monitor table availability status and capacity, or update table attributes.</p>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+    {% for table in tables %}
+        <div class="col">
+            <a href="{% url 'update_table' table.pk %}" class="card h-100 shadow-sm border-0 bg-white text-decoration-none transition-card">
+                <div class="card-body p-4 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h3 class="h5 mb-0 fw-bold text-dark">Table {{ table.number }}</h3>
+                        <i class="bi bi-door-closed text-muted fs-4"></i>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-muted mb-2"><i class="bi bi-people me-2"></i>Capacity: <strong>{{ table.capacity }}</strong> people</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-auto">
+                        <span class="text-muted small">Status</span>
                         {% if table.is_available %}
-                            <span class="available">Available</span>
+                            <span class="badge badge-available">Available</span>
                         {% else %}
-                            <span class="not-available">Not Available</span>
+                            <span class="badge badge-unavailable">Occupied</span>
                         {% endif %}
-                    </p>
-                    
-                    
+                    </div>
                 </div>
             </a>
-            {% empty %}
-                <div class="no-tables">No tables available.</div>
-            {% endfor %}
-
-            <a href="{% url 'create_table' %}" class = 'create-button'>
-               +</a>
         </div>
-</section>
+    {% empty %}
+        <div class="col-12 py-5 text-center">
+            <i class="bi bi-table fs-1 text-secondary mb-3 d-block"></i>
+            <p class="text-muted mb-0">No dining tables configured.</p>
+        </div>
+    {% endfor %}
+</div>
 
-<style>
-    /* Style the table section */
-    .restaurant-layout {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        background-color: #f0f0f0; /* Light gray background */
-    }
-
-    /* Style the tables container */
-    .tables-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-        gap: 20px; /* Space between cards */
-        width: 80%; /* Width of the grid */
-    }
-
-    /* Style each table card */
-    .table-card {
-        background-color: #fff; /* White background for cards */
-        border-radius: 8px; /* Rounded corners */
-        padding: 15px; /* Inner padding */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 1); /* Subtle shadow for depth */
-        transition: transform 0.2s; /* Smooth hover effect */
-    }
-
-    .table-card:hover {
-        transform: scale(1.05); /* Slightly enlarge on hover */
-    }
-
-    /* Style for table ID */
-    .table-id {
-        font-size: 1.5em; /* Font size for table ID */
-        margin: 0 0 10px; /* Margin below title */
-    }
-
-    /* Style for table capacity and availability */
-    .table-capacity, .table-availability {
-        font-size: 1em; /* Font size for capacity and availability */
-        margin: 0 0 5px; /* Margin below description */
-    }
-
-    /* Style the availability spans */
-    .available {
-        color: green; /* Green for available status */
-        font-weight: bold; /* Bold text */
-    }
-
-    .not-available {
-        color: red; /* Red for not available status */
-        font-weight: bold; /* Bold text */
-    }
-
-    /* Style for no tables message */
-    .no-tables {
-        grid-column: span 3; /* Span all columns if no tables */
-        text-align: center; /* Center text */
-        font-size: 1.2em; /* Font size for no tables message */
-        color: #777; /* Gray color for no tables message */
-    }
-
-    .create-button {
-        position: fixed; /* Fixed positioning to keep it in view */
-        bottom: 20px; /* Distance from the bottom */
-        right: 20px; /* Distance from the right */
-        width: 56px; /* Width of the button */
-        height: 56px; /* Height of the button */
-        background-color: #28a745; /* Green background */
-        color: white; /* White icon color */
-        border-radius: 50%; /* Make it round */
-        display: flex; /* Center the SVG */
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
-        text-decoration: none; /* Remove underline from link */
-        transition: background-color 0.3s; /* Smooth transition for hover effect */
-        font-weight:bold;
-        font-size:25px;
-    }
-    
-    .create-button:hover {
-        background-color: #218838; /* Darker green on hover */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-    }
-</style>
+<!-- Floating Action Button for Table Creation -->
+<a href="{% url 'create_table' %}" class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center border-0" 
+   style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; z-index: 1030; font-size: 28px;" 
+   title="Add Dining Table">
+    <i class="bi bi-plus-lg"></i>
+</a>
 {% endblock %}

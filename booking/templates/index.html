@@ -1,282 +1,147 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <style>
-       #header{
-        background-color: rgba(0, 0, 128, 0.9);
-       }
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
 
-        .logo {
-            font-size: 2em;
-            margin: 0;
-        }
+{% block title %}Home | Gourmet Reserve{% endblock %}
 
-        #main-content {
-            display: flex;
-            padding: 20px;
-        }
-
-        .side-nav {
-          background-color: rgba(0, 0, 128, 0.9); /* Dark blue background with slight transparency */
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-          margin-right: 20px; /* Space between main content and aside */
-          flex-basis: 20%; /* Adjust width as necessary */
-      }
-
-
-      .side-nav h2 {
-          margin-top: 0;
-          color: white; /* White text color for better visibility */
-      }
-
-      .side-nav ul {
-          list-style-type: none;
-          padding: 0;
-      }
-
-      .side-nav li {
-          margin: 10px 0;
-      }
-
-      .side-nav a {
-        text-decoration: none;
-        color: #add8e6; /* Light blue link color */
-        transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transition */
-    }
-    
-    .side-nav a:hover {
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add box shadow on hover */
-        transform: translateY(-2px); /* Slightly lift the link on hover */
-    }
-       
-      .form-container {
-          background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
-          border-radius: 10px;
-          margin-bottom:10px;
-          padding: 20px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-          backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background */
-          transition: transform 0.3s ease; /* Animation on hover */
-      }
-
-      .form-container:hover {
-          transform: translateY(-5px); /* Slightly lift the form on hover */
-      }
-
-      .booking-form h2 {
-          margin: 0 0 15px;
-          text-align: center;
-      }
-
-      button {
-          background-color: #007BFF;
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
-          width: 100%; /* Full width button */
-      }
-
-      button:hover {
-          background-color: #0056b3; /* Darker blue on hover */
-          transform: scale(1.05); /* Slightly enlarge on hover */
-      }
-      .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1000; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
-        backdrop-filter: blur(5px); /* Blur effect */
-    }
-    
-    .modal-content {
-        background-color: white; /* White background */
-        margin: 1%; /* 15% from the top and centered */
-        padding: 0;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Optional shadow */
-    }
-    
-    .close-button {
-        color: #aaa; /* Gray color */
-        float: right; /* Align to the right */
-        font-size: 28px; /* Font size */
-        font-weight: bold; /* Bold text */
-    }
-    
-    .close-button:hover,
-    .close-button:focus {
-        color: black; /* Change color on hover */
-        text-decoration: none; /* No underline */
-        cursor: pointer; /* Pointer cursor */
-    }
-    
-    .payment-form {
-        width: 100%; /* Full width */
-        height: 500px; /* Adjust height as necessary */
-        border: none; /* Remove border */
-        border-radius: 10px; /* Rounded corners */
-    }
-
-      /* Background Image Styles */
-      .booking-form {
-          background-image: url({% static 'img/meals.jpg' %});
-          background-size: cover; /* Cover the entire area */
-          background-position: center; /* Center the image */
-          padding: 20px; /* Padding inside the form */
-          border-radius: 10px; /* Rounded corners */
-          color: black; /* White text for better visibility */
-      }
-
-      /* Upcoming Bookings Styles */
-      .upcoming-booking {
-          background-color: rgba(144, 238, 144, 0.7); /* Light green background */
-          padding: 10px;
-          margin: 5px 0;
-          box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-          overflow: hidden;
-          border-radius: 5px; /* Rounded corners for bookings */
-      }
-
-      #footer {
-          background-color: rgba(0, 0, 128, 0.9);
-          color: white;
-          text-align: center;
-          padding: 10px 0;
-          position: relative; /* Ensure footer is at the bottom */
-          bottom: 0;
-          width: 100%;
-      }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            #main-content {
-                flex-direction: column; /* Stack elements on smaller screens */
-            }
-
-            .side-nav {
-                margin-right: 0; /* Remove margin on smaller screens */
-                margin-bottom: 20px; /* Add margin at the bottom */
-                flex-basis: 100%; /* Full width on mobile */
-            }
-
-            .content {
-                flex-basis: 100%; /* Full width on mobile */
-            }
-        }
-    </style>
-</head>
-<body>
-    <header id="header">
-        <nav class="navbar">
-            <h1 class="logo">Restaurant Table Booking System</h1>
-        </nav>
-    </header>
-
-    <main id="main-content">
-        {% if user.is_authenticated %}
-            <aside class="side-nav">
-                <h2>Navigation</h2>
-                <ul>
-                    <li><a href="{% url 'home' %}">Dashboard</a></li>
-                    <li><a href="{% url 'booking_list' %}">Bookings</a></li>
-                    <li><a href="{% url 'tables_list' %}">Tables</a></li>
-                    <li><a href="{% url 'dishes_list' %}">Dishes</a></li>
-                    <li><a href="{% url 'reports-view' %}">Reports</a></li>
-                </ul>
-                <br />
-                <div class="user-info">
-                    <li>{{ user.username }}</li>
-                    |
-                    <form class="form-btn" action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit">Logout</button>
-                    </form>
-                </div>
-            </aside>
-
-            {% block content %}
-            <section class="content" style='flex-basis: 40%;'>
-                <div class="booking-form">
-                    <form method="post" class="form-container">
-                        <h2>New Booking</h2>
-                        {% csrf_token %} {{ bookingform.as_p }}
-                        <button type="submit">Book</button>
-                    </form>
-                    
-                    <div class="form-container">
-                        <h2>Pay Here</h2>
-                        <button id="togglePaymentForm" onclick="togglePaymentForm()">Open Payment Form</button>
-                    </div>
-                    <!-- Modal Structure -->
-                    <div id="paymentModal" class="modal">
-                        <div class="modal-content">
-                            <span class="close-button" onclick="togglePaymentForm()">&times;</span>
-                            <iframe id="paymentIframe" src="http://tinypesa.com/Rbooking" class='payment-form'></iframe>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="heading-content" style='flex-basis: 40%;'>
-                <div class="bookings-section" >
-                    <h2>Today's Bookings</h2>
-                    <div id="bookings" style ='overflow:auto;'>
-                        {% if upcoming_bookings %}
-                            {% for booking in upcoming_bookings %}
-                                <p class="upcoming-booking">
-                                    {{ booking.date }}, {{ booking.time }} | Table {{ booking.table.id }}
-                                </p>
-                            {% endfor %}
-                        {% else %}
-                            <p>No upcoming bookings available.</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </section>
-            {% endblock %}
-        {% else %}
-            <form method="post" class="form-container">
-            {% csrf_token %}
-                <p>Kindly Login in to Access this Page</p>
-                <a class="btn" href="/accounts/login">Login Here</a>
-            </form>
+{% block content %}
+<div class="row g-4">
+    <!-- New booking + payment -->
+    <div class="col-12 col-lg-7">
+        <!-- Alert for M-Pesa status -->
+        {% if mpesa_message %}
+            <div class="alert alert-info shadow-sm alert-dismissible fade show">
+                <i class="bi bi-info-circle-fill me-2"></i>{{ mpesa_message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         {% endif %}
-    </main>
 
-    <footer id="footer" style='padding: 2px;'>
-        <p>© 2024 Restaurant Table Booking System. All rights reserved.</p>
-    </footer>
+        <div class="form-card mb-4 shadow-sm">
+            <h2 class="section-title h4 mb-3"><i class="bi bi-calendar-plus me-2 text-primary"></i>Reserve a Table</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                {% if bookingform.non_field_errors %}
+                    <div class="alert alert-danger shadow-sm">
+                        {% for error in bookingform.non_field_errors %}
+                            <p class="mb-0 small"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-        <script>
-            function togglePaymentForm() {
-                const modal = document.getElementById('paymentModal');
-                if (modal.style.display === 'none' || modal.style.display === '') {
-                    modal.style.display = 'block'; // Show the modal
-                } else {
-                    modal.style.display = 'none'; // Hide the modal
-                }
+                {% for field in bookingform %}
+                    {% if not field.is_hidden %}
+                        <div class="mb-3" {% if field.name == 'phone_number' %}id="phoneFieldContainer" style="display: none;"{% endif %}>
+                            <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text text-muted">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary w-100 mt-2 py-2">
+                    <i class="bi bi-bookmark-check me-1"></i>Book & Pay
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Today's bookings -->
+    <div class="col-12 col-lg-5">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light py-3">
+                <h2 class="h5 mb-0 fw-semibold"><i class="bi bi-calendar3 me-2 text-primary"></i>Today's Reservations</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="d-flex flex-column gap-3" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
+                    {% for booking in upcoming_bookings %}
+                        <div class="card border-0 bg-light-subtle shadow-sm p-3 border-start border-4 border-success rounded">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div>
+                                    <h3 class="h6 mb-1 fw-bold text-dark">Table {{ booking.table.number }}</h3>
+                                    <p class="mb-0 text-muted small"><i class="bi bi-clock me-1"></i>{{ booking.time|time:"g:i A" }}</p>
+                                </div>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">{{ booking.payment_status }}</span>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-calendar-x fs-1 mb-2 d-block text-secondary"></i>
+                            <p class="mb-0">No reservations scheduled for today.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const paymentSelect = document.getElementById('paymentMethodSelect');
+        const phoneContainer = document.getElementById('phoneFieldContainer');
+        
+        function togglePhoneField() {
+            if (paymentSelect && paymentSelect.value === 'M-Pesa') {
+                phoneContainer.style.display = 'block';
+            } else {
+                phoneContainer.style.display = 'none';
             }
-        </script>
-</body>
-</html>
+        }
+
+        if (paymentSelect) {
+            paymentSelect.addEventListener('change', togglePhoneField);
+            // Run on load in case there's a validation error and M-Pesa is already selected
+            togglePhoneField();
+        }
+
+        // Dynamic Table Availability Logic
+        const dateInput = document.getElementById('dateInput');
+        const timeInput = document.getElementById('timeInput');
+        const tableSelect = document.getElementById('tableSelect');
+
+        function fetchAvailableTables() {
+            const dateVal = dateInput.value;
+            const timeVal = timeInput.value;
+            
+            if (dateVal && timeVal) {
+                fetch(`/api/available-tables/?date=${dateVal}&time=${timeVal}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear current options
+                        tableSelect.innerHTML = '<option value="" selected>---------</option>';
+                        
+                        if (data.tables && data.tables.length > 0) {
+                            data.tables.forEach(table => {
+                                const option = document.createElement('option');
+                                option.value = table.id;
+                                option.textContent = table.text;
+                                tableSelect.appendChild(option);
+                            });
+                        } else {
+                            const option = document.createElement('option');
+                            option.value = "";
+                            option.textContent = "No tables available for this time";
+                            option.disabled = true;
+                            tableSelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching tables:', error));
+            }
+        }
+
+        if (dateInput && timeInput && tableSelect) {
+            dateInput.addEventListener('change', fetchAvailableTables);
+            timeInput.addEventListener('change', fetchAvailableTables);
+        }
+    });
+</script>
+{% endblock %}

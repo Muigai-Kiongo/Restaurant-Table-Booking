@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signUp (request):
@@ -23,3 +24,11 @@ def signUp (request):
         }
 
     return render(request, 'registration/register.html', context)
+
+
+@login_required
+def login_success_redirect(request):
+    if request.user.is_staff or request.user.is_superuser:
+        return redirect('staff_dashboard')
+    else:
+        return redirect('index')

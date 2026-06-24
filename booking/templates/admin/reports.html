@@ -1,39 +1,75 @@
 {% extends "admin/base_site.html" %}
 
 {% block content %}
+<div id="content-main" style="max-width: 900px; margin: 0 auto; padding: 20px; font-family: var(--font-body, 'Segoe UI', Arial, sans-serif);">
+    <h1 style="border-bottom: 2px solid #eaeaea; padding-bottom: 10px; margin-bottom: 20px; color: #333;">Generate Reservations Reports</h1>
     
-<section style='flex-basis:80%;'>
-    <h1>Reports</h1>
-    <div class="container">
-
-        <h1>Generate Reports</h1>
-        
-        <form method="post">
+    <div class="module" style="background: #fdfdfd; border: 1px solid #ddd; padding: 20px; border-radius: 6px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <form method="post" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Generate Report</button>
+            <div style="flex: 1 1 300px;">
+                <label for="{{ form.report_type.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 5px; color: #555;">{{ form.report_type.label }}</label>
+                {{ form.report_type }}
+            </div>
+            <div style="flex: 0 0 auto;">
+                <button type="submit" class="button" style="background: #79aec8; border: none; color: #fff; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background 0.2s;">
+                    Generate Report
+                </button>
+            </div>
         </form>
-    
-        <div class="report-container">
-            {% if report_html %}
-                <h2>{{ report_type|title }} Report</h2>
-                <div>{{ report_html|safe }}</div>
-                <a href="{% url 'download_report' report_type %}" class="btn">Download PDF</a>
-            {% endif %}
+    </div>
+
+    {% if report_html %}
+        <div class="module" style="background: #fff; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <div style="background: #f6f6f6; border-bottom: 1px solid #ddd; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <h2 style="margin: 0; font-size: 1.25em; text-transform: capitalize; color: #333;">{{ report_type }} Report Details</h2>
+                <a href="{% url 'custom_admin:download_report' report_type %}" class="button" style="background: #417690; color: #fff; text-decoration: none; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 0.875em;">
+                    Download PDF Report
+                </a>
+            </div>
+            <div style="padding: 20px;">
+                <div class="table-responsive" style="overflow-x: auto;">
+                    {{ report_html|safe }}
+                </div>
+            </div>
         </div>
-     
-</section>
+    {% endif %}
+</div>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
+    /* Styling adjustments for injected choices widgets in admin report */
+    #id_report_type {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+        font-size: 14px;
+        box-sizing: border-box;
     }
-    .report-container {
-        margin-top: 20px;
+    #id_report_type:focus {
+        border-color: #79aec8;
+        outline: none;
     }
-    button {
-        margin-top: 10px;
+    /* Style injected report table format inside the admin site */
+    .report-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    .report-content th {
+        background: #417690;
+        color: #fff;
+        padding: 10px;
+        text-align: left;
+        font-weight: bold;
+    }
+    .report-content td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    .report-content tr:hover {
+        background: #f9f9f9;
     }
 </style>
 {% endblock %}
-
